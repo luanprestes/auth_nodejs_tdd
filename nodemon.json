@@ -1,7 +1,8 @@
 {
   "verbose": true,
   "ignore": ["*.test.js"],
+  "ext": "ts",
   "execMap": {
-    "js": "sucrase-node src/server.ts"
+    "ts": "sucrase-node src/server.ts"
   }
 }

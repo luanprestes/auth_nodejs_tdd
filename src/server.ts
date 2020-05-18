@@ -1,5 +1,5 @@
 import app from './app'
 
-app.listen(3333, () => {
-  console.log('running port 3333')
+app.listen(process.env.NODE_PORT, () => {
+  console.log(`running port ${process.env.NODE_PORT}`)
 })
