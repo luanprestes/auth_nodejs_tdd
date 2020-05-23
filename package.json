@@ -4,7 +4,7 @@
   "main": "src/app/server.ts",
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./src/database/ormconfig.ts",
+    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./src/database/ormconfig.ts"
   },
   "repository": "https://github.com/luanprestes/auth_nodejs_tdd.git",
   "author": "Luan Prestes",
