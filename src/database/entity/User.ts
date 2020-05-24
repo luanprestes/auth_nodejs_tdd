@@ -1,5 +1,6 @@
 import 'reflect-metadata'
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
+import bcrypt from 'bcryptjs'
 
 @Entity()
 export class User {
@@ -17,6 +18,8 @@ export class User {
   })
   passwordHash: string;
 
+  password: string;
+
   @Column({
     type: 'datetime',
     name: 'created_at',
@@ -31,4 +34,13 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP'
   })
   updatedAt: Date;
+
+  @BeforeInsert()
+  async encryptPassword (): Promise<void> {
+    this.passwordHash = await bcrypt.hash(this.password, 8)
+  }
+
+  async checkPassword (password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.passwordHash)
+  }
 }

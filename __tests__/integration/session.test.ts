@@ -2,12 +2,14 @@
 import {
   createConnection,
   getConnection,
-  getRepository,
+  getManager,
   Connection
 } from 'typeorm'
+import supertest from 'supertest'
 
 import connection from '../connection'
 import { User } from '../../src/database/entity/User'
+import app from '../../src/app'
 
 describe('Autentication', () => {
   beforeEach(() => {
@@ -19,19 +21,41 @@ describe('Autentication', () => {
     return conn.close()
   })
 
-  it('should save email', async () => {
-    await getRepository(User).insert({
-      name: 'Luan',
-      email: 'luan@prestes',
-      passwordHash: '123456'
-    })
+  it('should authenticate with valid credentials', async () => {
+    const entityManager = getManager()
+    const userData = new User()
+    userData.name = 'luan'
+    userData.email = 'luan@prestes'
+    userData.password = '123456'
+    await entityManager.save(userData)
+    const user = await entityManager.findOne(User, 1)
 
-    const luan = await getRepository(User).find({
-      where: {
-        id: 1
-      }
-    })
+    const response = await supertest(app)
+      .post('/sessions')
+      .send({
+        email: user.email,
+        password: '123456'
+      })
 
-    expect(luan[0].email).toBe('luan@prestes')
+    expect(response.status).toBe(200)
+  })
+
+  it('should not authenticate with invalid credentials', async () => {
+    const entityManager = getManager()
+    const userData = new User()
+    userData.name = 'luan'
+    userData.email = 'luan@prestes'
+    userData.password = '123456'
+    await entityManager.save(userData)
+    const user = await entityManager.findOne(User, 1)
+
+    const response = await supertest(app)
+      .post('/sessions')
+      .send({
+        email: user.email,
+        password: '123123'
+      })
+
+    expect(response.status).toBe(401)
   })
 })
