@@ -5,9 +5,7 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./src/database/ormconfig.ts",
-    "typeorm:cli:test": "ts-node ./node_modules/typeorm/cli -f ./__test__/ormconfig.ts",
-    "pre:test": "yarn typeorm:cli:test migration:run",
-    "pos:test": "yarn typeorm:cli:test migration:revert"
+    "test": "jest"
   },
   "repository": "https://github.com/luanprestes/auth_nodejs_tdd.git",
   "author": "Luan Prestes",
@@ -15,6 +13,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.6",
+    "@types/jest": "^25.2.3",
     "@types/node": "^14.0.5",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -24,9 +23,12 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
+    "jest": "^25.5.4",
     "nodemon": "^2.0.4",
     "sqlite3": "^4.2.0",
     "sucrase": "^3.14.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.0.0",
     "ts-node": "^8.10.1",
     "typescript": "^3.9.2"
   },
