@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 @Entity()
 export class User {
@@ -42,5 +43,9 @@ export class User {
 
   async checkPassword (password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.passwordHash)
+  }
+
+  generateToken (): string {
+    return jwt.sign({ id: this.id }, process.env.APP_SECRET)
   }
 }
